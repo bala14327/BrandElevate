@@ -1,0 +1,85 @@
+// history.ts
+
+interface HistoryItem {
+  id: string;
+  title: string;
+  preview: string;
+  timestamp: string;
+}
+
+const historyData: HistoryItem[] = [
+  {
+    id: '1',
+    title: 'Welcome Conversation',
+    preview: 'Hi! How can I help you today?',
+    timestamp: '2025-05-15 10:21 AM'
+  },
+  {
+    id: '2',
+    title: 'Order Status',
+    preview: 'Your order #1234 has been shipped.',
+    timestamp: '2025-05-14 09:12 AM'
+  },
+  {
+    id: '3',
+    title: 'Payment Query',
+    preview: 'Can I pay via UPI?',
+    timestamp: '2025-05-13 04:45 PM'
+  }
+  // Add more items as needed
+];
+
+const historyList = document.getElementById('historyList') as HTMLElement;
+const searchInput = document.getElementById('searchInput') as HTMLInputElement;
+
+function renderHistory(items: HistoryItem[]) {
+  historyList.innerHTML = '';
+  items.forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'history-item';
+    div.innerHTML = `
+      <div class="history-info">
+        <div class="history-title">${item.title}</div>
+        <div class="history-preview">${item.preview}</div>
+        <div class="history-timestamp">${item.timestamp}</div>
+      </div>
+      <div class="history-actions">
+        <button class="action-btn" title="Delete" data-id="${item.id}">&#128465;</button>
+        <button class="action-btn" title="Share">&#128257;</button>
+      </div>
+    `;
+    div.addEventListener('click', (e) => {
+      if ((e.target as HTMLElement).classList.contains('action-btn')) return;
+      alert(`Opening conversation: ${item.title}`);
+    });
+    div.querySelector('.action-btn[title="Delete"]')?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      deleteHistoryItem(item.id);
+    });
+    historyList.appendChild(div);
+  });
+}
+
+function deleteHistoryItem(id: string) {
+  const idx = historyData.findIndex(item => item.id === id);
+  if (idx !== -1) {
+    historyData.splice(idx, 1);
+    renderHistory(filteredHistory());
+  }
+}
+
+function filteredHistory(): HistoryItem[] {
+  const query = searchInput.value.trim().toLowerCase();
+  if (!query) return historyData;
+  return historyData.filter(item =>
+    item.title.toLowerCase().includes(query) ||
+    item.preview.toLowerCase().includes(query)
+  );
+}
+
+searchInput.addEventListener('input', () => {
+  renderHistory(filteredHistory());
+});
+
+// Initial render
+renderHistory(historyData);
