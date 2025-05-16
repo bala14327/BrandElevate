@@ -83,3 +83,144 @@ searchInput.addEventListener('input', () => {
 
 // Initial render
 renderHistory(historyData);
+
+
+
+
+Html
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Chatbot History</title>
+  <link rel="stylesheet" href="app.css">
+  <script src="history.ts" type="module"></script>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Chat History</h1>
+      <input id="searchInput" type="text" placeholder="Search conversations...">
+    </div>
+    <div id="historyList" class="history-list"></div>
+  </div>
+</body>
+</html>
+
+
+
+Css
+
+body {
+  background: #f4f6fb;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 700px;
+  margin: 40px auto;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 6px 24px rgba(80, 80, 140, 0.12);
+  padding: 32px 24px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+}
+
+.header h1 {
+  color: #5d3fd3;
+  margin: 0;
+  font-size: 2rem;
+}
+
+.header input {
+  padding: 10px 16px;
+  border: 1.5px solid #d1d5db;
+  border-radius: 24px;
+  font-size: 1rem;
+  transition: border 0.2s;
+}
+
+.header input:focus {
+  border: 1.5px solid #5d3fd3;
+  outline: none;
+}
+
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.history-item {
+  background: #f6f7fb;
+  border-radius: 12px;
+  padding: 18px 22px;
+  box-shadow: 0 2px 8px rgba(80, 80, 140, 0.07);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  animation: slideIn 0.4s;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.history-item:hover {
+  box-shadow: 0 6px 18px rgba(80, 80, 140, 0.15);
+  transform: translateY(-2px) scale(1.01);
+}
+
+.history-info {
+  flex: 1;
+}
+
+.history-title {
+  font-weight: 600;
+  color: #3d2c8d;
+  margin-bottom: 4px;
+}
+
+.history-preview {
+  color: #707070;
+  font-size: 1rem;
+  margin-bottom: 2px;
+}
+
+.history-timestamp {
+  font-size: 0.88rem;
+  color: #a3a3a3;
+}
+
+.history-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.action-btn {
+  background: none;
+  border: none;
+  color: #5d3fd3;
+  font-size: 1.2rem;
+  cursor: pointer;
+  border-radius: 50%;
+  padding: 6px;
+  transition: background 0.2s;
+}
+
+.action-btn:hover {
+  background: #e6e0fa;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-40px);}
+  to { opacity: 1; transform: translateX(0);}
+}
