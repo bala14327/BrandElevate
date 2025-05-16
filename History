@@ -1,226 +1,562 @@
-// history.ts
+<div class="main-container">
+  <!-- Left Sidebar -->
+  <div class="sidebar">
+    <div class="sidebar-content">
+      <button class="sidebar-button active">
+        <i class="fas fa-history"></i>
+        <span>History</span>
+      </button>
+      <!-- Additional sidebar buttons could go here -->
+    </div>
+  </div>
 
-interface HistoryItem {
-  id: string;
-  title: string;
-  preview: string;
-  timestamp: string;
+  <!-- Vertical Divider -->
+  <div class="divider"></div>
+
+  <!-- Right Main Content -->
+  <div class="content-area">
+    <div class="header">
+      <h2>Chat History</h2>
+      
+      <div class="filter-controls">
+        <!-- Search Box -->
+        <div class="search-container">
+          <input type="text" placeholder="Search conversations..." [(ngModel)]="searchQuery" 
+                 (input)="applyFilters()">
+          <i class="fas fa-search"></i>
+        </div>
+        
+        <!-- Filter By Dropdown -->
+        <div class="dropdown filter-dropdown">
+          <button (click)="toggleFilterDropdown()" class="dropdown-btn">
+            Filter by: {{selectedFilter}}
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div [class.show]="showFilterDropdown" class="dropdown-content">
+            <a (click)="selectFilter('All')">All</a>
+            <a (click)="selectFilter('Texts')">Texts</a>
+            <a (click)="selectFilter('Images')">Images</a>
+            <a (click)="selectFilter('Date')">Date</a>
+          </div>
+        </div>
+        
+        <!-- Date Picker (conditionally shown) -->
+        <div *ngIf="selectedFilter === 'Date'" class="date-picker">
+          <input type="date" [(ngModel)]="filterDate" (change)="applyFilters()">
+        </div>
+        
+        <!-- Sort By Dropdown -->
+        <div class="dropdown sort-dropdown">
+          <button (click)="toggleSortDropdown()" class="dropdown-btn">
+            Sort by: 
+            <span *ngIf="sortOrder === 'asc'">Time <i class="fas fa-arrow-up"></i></span>
+            <span *ngIf="sortOrder === 'desc'">Time <i class="fas fa-arrow-down"></i></span>
+          </button>
+          <div [class.show]="showSortDropdown" class="dropdown-content">
+            <a (click)="selectSort('asc')">Time <i class="fas fa-arrow-up"></i></a>
+            <a (click)="selectSort('desc')">Time <i class="fas fa-arrow-down"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chat List -->
+    <div class="chat-list">
+      <div *ngFor="let chat of filteredChats" class="chat-card">
+        <!-- Chat Timestamp -->
+        <div class="chat-timestamp">
+          {{chat.timestamp | date:'MMM d, yyyy, h:mm a'}}
+        </div>
+        
+        <!-- Chat Content -->
+        <div class="chat-content">
+          <div class="message user-message" *ngIf="chat.userMessage">
+            {{chat.userMessage}}
+          </div>
+          <div class="message bot-message" *ngIf="chat.botMessage">
+            {{chat.botMessage}}
+          </div>
+          <div *ngIf="chat.hasImage" class="chat-image">
+            <img [src]="chat.imageUrl" alt="Chat image">
+          </div>
+        </div>
+        
+        <!-- Chat Actions -->
+        <div class="chat-actions">
+          <button class="action-btn" (click)="copyChat(chat)" title="Copy">
+            <i class="fas fa-copy"></i>
+          </button>
+          <button class="action-btn" (click)="saveChat(chat)" title="Save">
+            <i class="fas fa-save"></i>
+          </button>
+          <button class="action-btn" (click)="deleteChat(chat)" title="Delete">
+            <i class="fas fa-trash"></i>
+          </button>
+          <button class="action-btn" (click)="editChat(chat)" title="Edit">
+            <i class="fas fa-edit"></i>
+          </button>
+          <button class="action-btn" (click)="startOverChat(chat)" title="Start Over">
+            <i class="fas fa-redo"></i>
+          </button>
+        </div>
+      </div>
+      
+      <div *ngIf="filteredChats.length === 0" class="no-chats">
+        No chat history found.
+      </div>
+    </div>
+  </div>
+</div>
+
+
+/* Main container styles */
+.main-container {
+  display: flex;
+  min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f5f7fa;
 }
 
-const historyData: HistoryItem[] = [
-  {
-    id: '1',
-    title: 'Welcome Conversation',
-    preview: 'Hi! How can I help you today?',
-    timestamp: '2025-05-15 10:21 AM'
-  },
-  {
-    id: '2',
-    title: 'Order Status',
-    preview: 'Your order #1234 has been shipped.',
-    timestamp: '2025-05-14 09:12 AM'
-  },
-  {
-    id: '3',
-    title: 'Payment Query',
-    preview: 'Can I pay via UPI?',
-    timestamp: '2025-05-13 04:45 PM'
+/* Sidebar styles */
+.sidebar {
+  width: 250px;
+  background-color: #222;
+  color: #fff;
+  transition: width 0.3s;
+  
+  .sidebar-content {
+    padding: 20px 0;
   }
-  // Add more items as needed
+  
+  .sidebar-button {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 12px 20px;
+    background: none;
+    border: none;
+    color: #fff;
+    text-align: left;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    
+    i {
+      margin-right: 12px;
+      font-size: 18px;
+    }
+    
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+    
+    &.active {
+      background-color: rgba(79, 123, 239, 0.3);
+      border-left: 4px solid #4f7bef;
+    }
+  }
+}
+
+/* Vertical divider */
+.divider {
+  width: 1px;
+  background-color: #ddd;
+}
+
+/* Main content area */
+.content-area {
+  flex: 1;
+  padding: 20px;
+}
+
+/* Header styles */
+.header {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  
+  h2 {
+    margin: 0 0 20px 0;
+    color: #4f7bef;
+    font-size: 24px;
+  }
+}
+
+/* Filter controls container */
+.filter-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  align-items: center;
+}
+
+/* Search container */
+.search-container {
+  flex: 1;
+  min-width: 200px;
+  position: relative;
+  
+  input {
+    width: 100%;
+    padding: 10px 40px 10px 15px;
+    border-radius: 20px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+    
+    &:focus {
+      outline: none;
+      border-color: #4f7bef;
+    }
+  }
+  
+  i {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+  }
+}
+
+/* Dropdown styles */
+.dropdown {
+  position: relative;
+  min-width: 150px;
+  
+  .dropdown-btn {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    
+    i {
+      margin-left: 10px;
+    }
+  }
+  
+  .dropdown-content {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    display: none;
+    min-width: 100%;
+    background-color: #fff;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    margin-top: 5px;
+    
+    &.show {
+      display: block;
+      animation: fadeIn 0.2s;
+    }
+    
+    a {
+      display: block;
+      padding: 10px 15px;
+      text-decoration: none;
+      color: #333;
+      cursor: pointer;
+      
+      &:hover {
+        background-color: #f5f5f5;
+      }
+    }
+  }
+}
+
+/* Date picker styles */
+.date-picker {
+  input {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+  }
+}
+
+/* Chat list styles */
+.chat-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Chat card */
+.chat-card {
+  background-color: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  
+  .chat-timestamp {
+    padding: 10px 15px;
+    background-color: #f8f9fb;
+    color: #666;
+    font-size: 13px;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .chat-content {
+    padding: 15px;
+    
+    .message {
+      padding: 10px 15px;
+      border-radius: 18px;
+      margin-bottom: 10px;
+      max-width: 80%;
+    }
+    
+    .user-message {
+      background-color: #4f7bef;
+      color: white;
+      align-self: flex-end;
+      margin-left: auto;
+      border-bottom-right-radius: 4px;
+    }
+    
+    .bot-message {
+      background-color: #f0f2f5;
+      color: #333;
+      align-self: flex-start;
+      border-bottom-left-radius: 4px;
+    }
+    
+    .chat-image {
+      margin-top: 10px;
+      
+      img {
+        max-width: 100%;
+        border-radius: 8px;
+      }
+    }
+  }
+  
+  .chat-actions {
+    display: flex;
+    padding: 10px 15px;
+    background-color: #f8f9fb;
+    border-top: 1px solid #eee;
+    
+    .action-btn {
+      background: none;
+      border: none;
+      padding: 8px 10px;
+      margin-right: 5px;
+      cursor: pointer;
+      border-radius: 4px;
+      color: #666;
+      
+      &:hover {
+        background-color: #eee;
+        color: #4f7bef;
+      }
+      
+      i {
+        font-size: 16px;
+      }
+    }
+  }
+}
+
+/* Empty state */
+.no-chats {
+  padding: 40px;
+  text-align: center;
+  background-color: #fff;
+  border-radius: 10px;
+  color: #999;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .main-container {
+    flex-direction: column;
+  }
+  
+  .sidebar {
+    width: 100%;
+    min-height: auto;
+  }
+  
+  .divider {
+    display: none;
+  }
+  
+  .filter-controls {
+    flex-direction: column;
+    align-items: stretch;
+    
+    .search-container {
+      margin-bottom: 10px;
+    }
+  }
+}
+
+
+
+// Sample chat data
+let chats = [
+  {
+    id: 1,
+    timestamp: new Date('2025-05-16T10:30:00'),
+    messages: [
+      { text: 'How can I improve my website performance?', isUser: true, timestamp: new Date('2025-05-16T10:30:00') },
+      { text: 'Optimize images, use lazy loading, minify CSS/JS, and use a CDN.', isUser: false, timestamp: new Date('2025-05-16T10:30:15') }
+    ]
+  },
+  {
+    id: 2,
+    timestamp: new Date('2025-05-15T14:22:00'),
+    messages: [
+      { text: 'Can you show me a chart of monthly sales?', isUser: true, timestamp: new Date('2025-05-15T14:22:00') },
+      { text: 'Here is your sales chart for the past 6 months:', isUser: false, timestamp: new Date('2025-05-15T14:22:10'), imageUrl: 'https://via.placeholder.com/80x60?text=Chart' }
+    ]
+  }
 ];
 
-const historyList = document.getElementById('historyList') as HTMLElement;
-const searchInput = document.getElementById('searchInput') as HTMLInputElement;
+let filter = 'All';
+let sort = 'desc';
+let filterDate = '';
+let search = '';
 
-function renderHistory(items: HistoryItem[]) {
-  historyList.innerHTML = '';
-  items.forEach(item => {
-    const div = document.createElement('div');
-    div.className = 'history-item';
-    div.innerHTML = `
-      <div class="history-info">
-        <div class="history-title">${item.title}</div>
-        <div class="history-preview">${item.preview}</div>
-        <div class="history-timestamp">${item.timestamp}</div>
-      </div>
-      <div class="history-actions">
-        <button class="action-btn" title="Delete" data-id="${item.id}">&#128465;</button>
-        <button class="action-btn" title="Share">&#128257;</button>
+function renderHistory() {
+  let filtered = chats.slice();
+
+  // Search filter
+  if (search) {
+    filtered = filtered.filter(chat =>
+      chat.messages.some(m => m.text.toLowerCase().includes(search.toLowerCase()))
+    );
+  }
+
+  // Filter by type
+  if (filter === 'Texts') {
+    filtered = filtered.filter(chat =>
+      chat.messages.every(m => !m.imageUrl)
+    );
+  } else if (filter === 'Images') {
+    filtered = filtered.filter(chat =>
+      chat.messages.some(m => m.imageUrl)
+    );
+  } else if (filter === 'Date' && filterDate) {
+    filtered = filtered.filter(chat =>
+      chat.timestamp.toISOString().split('T')[0] === filterDate
+    );
+  }
+
+  // Sort
+  filtered.sort((a, b) => sort === 'asc'
+    ? a.timestamp - b.timestamp
+    : b.timestamp - a.timestamp
+  );
+
+  // Render
+  const historyList = document.getElementById('historyList');
+  historyList.innerHTML = filtered.length === 0 ? '<div style="color:#888;padding:30px;text-align:center;">No chat history found</div>' : '';
+  filtered.forEach(chat => {
+    const chatDiv = document.createElement('div');
+    chatDiv.className = 'chat-item';
+    chatDiv.innerHTML = `
+      <div class="chat-timestamp">${chat.timestamp.toLocaleString()}</div>
+      ${chat.messages.map(m => `
+        <div class="chat-message">
+          ${m.imageUrl ? `<img src="${m.imageUrl}" alt="Image">` : ''}
+          <div>
+            <div><b>${m.isUser ? 'You' : 'Bot'}:</b> ${m.text}</div>
+            <div style="font-size:12px;color:#aaa;">${m.timestamp.toLocaleTimeString()}</div>
+          </div>
+        </div>
+      `).join('')}
+      <div class="action-row">
+        <button class="action-btn" onclick="copyChat(${chat.id})"><i class="fas fa-copy"></i>Copy</button>
+        <button class="action-btn" onclick="saveChat(${chat.id})"><i class="fas fa-save"></i>Save</button>
+        <button class="action-btn" onclick="deleteChat(${chat.id})"><i class="fas fa-trash"></i>Delete</button>
+        <button class="action-btn" onclick="editChat(${chat.id})"><i class="fas fa-edit"></i>Edit</button>
+        <button class="action-btn" onclick="startOverChat(${chat.id})"><i class="fas fa-redo"></i>Start Over</button>
       </div>
     `;
-    div.addEventListener('click', (e) => {
-      if ((e.target as HTMLElement).classList.contains('action-btn')) return;
-      alert(`Opening conversation: ${item.title}`);
-    });
-    div.querySelector('.action-btn[title="Delete"]')?.addEventListener('click', (e) => {
-      e.stopPropagation();
-      deleteHistoryItem(item.id);
-    });
-    historyList.appendChild(div);
+    historyList.appendChild(chatDiv);
   });
 }
 
-function deleteHistoryItem(id: string) {
-  const idx = historyData.findIndex(item => item.id === id);
-  if (idx !== -1) {
-    historyData.splice(idx, 1);
-    renderHistory(filteredHistory());
-  }
-}
+// Action functions
+window.copyChat = function(id) {
+  const chat = chats.find(c => c.id === id);
+  const text = chat.messages.map(m => `${m.isUser ? 'You' : 'Bot'}: ${m.text}`).join('\n');
+  navigator.clipboard.writeText(text);
+  alert('Chat copied!');
+};
+window.saveChat = function(id) {
+  const chat = chats.find(c => c.id === id);
+  const text = chat.messages.map(m => `${m.isUser ? 'You' : 'Bot'}: ${m.text}`).join('\n');
+  const blob = new Blob([text], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `chat-${id}.txt`;
+  a.click();
+  URL.revokeObjectURL(url);
+};
+window.deleteChat = function(id) {
+  chats = chats.filter(c => c.id !== id);
+  renderHistory();
+};
+window.editChat = function(id) {
+  alert('Edit not implemented.');
+};
+window.startOverChat = function(id) {
+  alert('Start over not implemented.');
+};
 
-function filteredHistory(): HistoryItem[] {
-  const query = searchInput.value.trim().toLowerCase();
-  if (!query) return historyData;
-  return historyData.filter(item =>
-    item.title.toLowerCase().includes(query) ||
-    item.preview.toLowerCase().includes(query)
-  );
-}
-
-searchInput.addEventListener('input', () => {
-  renderHistory(filteredHistory());
+// Filter and sort dropdown logic
+document.getElementById('filterBtn').onclick = function() {
+  document.getElementById('filterMenu').parentElement.classList.toggle('open');
+  document.getElementById('sortMenu').parentElement.classList.remove('open');
+};
+document.getElementById('sortBtn').onclick = function() {
+  document.getElementById('sortMenu').parentElement.classList.toggle('open');
+  document.getElementById('filterMenu').parentElement.classList.remove('open');
+};
+document.querySelectorAll('#filterMenu div').forEach(item => {
+  item.onclick = function() {
+    filter = this.dataset.value;
+    document.getElementById('filterLabel').textContent = filter;
+    document.getElementById('filterMenu').parentElement.classList.remove('open');
+    document.getElementById('dateInput').style.display = filter === 'Date' ? 'inline-block' : 'none';
+    renderHistory();
+  };
 });
+document.querySelectorAll('#sortMenu div').forEach(item => {
+  item.onclick = function() {
+    sort = this.dataset.value;
+    document.getElementById('sortIcon').innerHTML = sort === 'asc' ? '<i class="fas fa-arrow-up"></i>' : '<i class="fas fa-arrow-down"></i>';
+    document.getElementById('sortMenu').parentElement.classList.remove('open');
+    renderHistory();
+  };
+});
+document.getElementById('searchInput').oninput = function() {
+  search = this.value;
+  renderHistory();
+};
+document.getElementById('dateInput').onchange = function() {
+  filterDate = this.value;
+  renderHistory();
+};
 
 // Initial render
-renderHistory(historyData);
-
-
-
-
-Html
-
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Chatbot History</title>
-  <link rel="stylesheet" href="app.css">
-  <script src="history.ts" type="module"></script>
-</head>
-<body>
-  <div class="container">
-    <div class="header">
-      <h1>Chat History</h1>
-      <input id="searchInput" type="text" placeholder="Search conversations...">
-    </div>
-    <div id="historyList" class="history-list"></div>
-  </div>
-</body>
-</html>
-
-
-
-Css
-
-body {
-  background: #f4f6fb;
-  font-family: 'Segoe UI', Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-}
-
-.container {
-  max-width: 700px;
-  margin: 40px auto;
-  background: #fff;
-  border-radius: 18px;
-  box-shadow: 0 6px 24px rgba(80, 80, 140, 0.12);
-  padding: 32px 24px;
-}
-
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 28px;
-}
-
-.header h1 {
-  color: #5d3fd3;
-  margin: 0;
-  font-size: 2rem;
-}
-
-.header input {
-  padding: 10px 16px;
-  border: 1.5px solid #d1d5db;
-  border-radius: 24px;
-  font-size: 1rem;
-  transition: border 0.2s;
-}
-
-.header input:focus {
-  border: 1.5px solid #5d3fd3;
-  outline: none;
-}
-
-.history-list {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-}
-
-.history-item {
-  background: #f6f7fb;
-  border-radius: 12px;
-  padding: 18px 22px;
-  box-shadow: 0 2px 8px rgba(80, 80, 140, 0.07);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  cursor: pointer;
-  animation: slideIn 0.4s;
-  transition: box-shadow 0.2s, transform 0.2s;
-}
-
-.history-item:hover {
-  box-shadow: 0 6px 18px rgba(80, 80, 140, 0.15);
-  transform: translateY(-2px) scale(1.01);
-}
-
-.history-info {
-  flex: 1;
-}
-
-.history-title {
-  font-weight: 600;
-  color: #3d2c8d;
-  margin-bottom: 4px;
-}
-
-.history-preview {
-  color: #707070;
-  font-size: 1rem;
-  margin-bottom: 2px;
-}
-
-.history-timestamp {
-  font-size: 0.88rem;
-  color: #a3a3a3;
-}
-
-.history-actions {
-  display: flex;
-  gap: 12px;
-}
-
-.action-btn {
-  background: none;
-  border: none;
-  color: #5d3fd3;
-  font-size: 1.2rem;
-  cursor: pointer;
-  border-radius: 50%;
-  padding: 6px;
-  transition: background 0.2s;
-}
-
-.action-btn:hover {
-  background: #e6e0fa;
-}
-
-@keyframes slideIn {
-  from { opacity: 0; transform: translateX(-40px);}
-  to { opacity: 1; transform: translateX(0);}
-}
+renderHistory();
