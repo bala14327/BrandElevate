@@ -1,3 +1,26 @@
+document.addEventListener('DOMContentLoaded', () => {
+  function setupDropdown(dropdownBtnId: string, dropdownContentId: string) {
+    const btn = document.getElementById(dropdownBtnId);
+    const content = document.getElementById(dropdownContentId);
+
+    if (btn && content) {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        content.classList.toggle('show');
+      });
+    }
+  }
+
+  setupDropdown('filterDropdownBtn', 'filterDropdownContent');
+  setupDropdown('sortDropdownBtn', 'sortDropdownContent');
+
+  // Close dropdowns when clicking outside
+  window.addEventListener('click', () => {
+    document.querySelectorAll('.dropdown-content').forEach(dd => dd.classList.remove('show'));
+  });
+});
+
+
 // Define interfaces for the chat data structure
 interface Chat {
   id: number;
