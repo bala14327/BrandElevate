@@ -1,3 +1,90 @@
+/* Make sure dropdowns show properly */
+.dropdown-content.show {
+  display: block !important;
+  animation: fadeIn 0.2s;
+}
+
+/* Improve chat styling */
+.chat-card {
+  background-color: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  margin-bottom: 15px;
+}
+
+.chat-timestamp {
+  padding: 10px 15px;
+  background-color: #f8f9fb;
+  color: #666;
+  font-size: 13px;
+  border-bottom: 1px solid #eee;
+}
+
+.chat-content {
+  padding: 15px;
+}
+
+.user-message {
+  background-color: #4f7bef;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 18px;
+  border-bottom-right-radius: 4px;
+  margin-bottom: 10px;
+  margin-left: auto;
+  max-width: 80%;
+  display: inline-block;
+  float: right;
+  clear: both;
+}
+
+.bot-message {
+  background-color: #f0f2f5;
+  color: #333;
+  padding: 10px 15px;
+  border-radius: 18px;
+  border-bottom-left-radius: 4px;
+  margin-bottom: 10px;
+  max-width: 80%;
+  display: inline-block;
+  float: left;
+  clear: both;
+}
+
+.chat-image {
+  margin-top: 10px;
+  clear: both;
+}
+
+.chat-image img {
+  max-width: 100%;
+  border-radius: 8px;
+}
+
+.chat-actions {
+  display: flex;
+  padding: 10px 15px;
+  background-color: #f8f9fb;
+  border-top: 1px solid #eee;
+}
+
+.action-btn {
+  background: none;
+  border: none;
+  padding: 8px 10px;
+  margin-right: 5px;
+  cursor: pointer;
+  border-radius: 4px;
+  color: #666;
+}
+
+.action-btn:hover {
+  background-color: #eee;
+  color: #4f7bef;
+}
+
+
 <div class="main-container">
   <!-- Left Sidebar -->
   <div class="sidebar">
