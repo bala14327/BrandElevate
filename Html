@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat History</title>
+  <link rel="stylesheet" href="app.css">
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+  <div class="main-container">
+    <!-- Left Sidebar -->
+    <div class="sidebar">
+      <div class="sidebar-content">
+        <button id="historyBtn" class="sidebar-button active">
+          <i class="fas fa-history"></i>
+          <span>History</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Vertical Divider -->
+    <div class="divider"></div>
+
+    <!-- Right Main Content -->
+    <div class="content-area">
+      <div class="header">
+        <h2>Chat History</h2>
+        
+        <div class="filter-controls">
+          <!-- Search Box -->
+          <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Search conversations...">
+            <i class="fas fa-search"></i>
+          </div>
+          
+          <!-- Filter By Dropdown -->
+          <div class="dropdown filter-dropdown">
+            <button id="filterDropdownBtn" class="dropdown-btn">
+              Filter by: <span id="selectedFilter">All</span>
+              <i class="fas fa-chevron-down"></i>
+            </button>
+            <div id="filterDropdownContent" class="dropdown-content">
+              <a data-filter="All">All</a>
+              <a data-filter="Texts">Texts</a>
+              <a data-filter="Images">Images</a>
+              <a data-filter="Date">Date</a>
+            </div>
+          </div>
+          
+          <!-- Date Picker -->
+          <div id="datePicker" class="date-picker" style="display: none;">
+            <input type="date" id="filterDate">
+          </div>
+          
+          <!-- Sort By Dropdown -->
+          <div class="dropdown sort-dropdown">
+            <button id="sortDropdownBtn" class="dropdown-btn">
+              Sort by Time: 
+              <span id="sortOrderDisplay"><i class="fas fa-arrow-down"></i></span>
+            </button>
+            <div id="sortDropdownContent" class="dropdown-content">
+              <a data-sort="asc">Time <i class="fas fa-arrow-up"></i></a>
+              <a data-sort="desc">Time <i class="fas fa-arrow-down"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chat List -->
+      <div id="chatList" class="chat-list">
+        <!-- Chat items will be inserted here by JavaScript -->
+      </div>
+    </div>
+  </div>
+  
+  <script src="app.js"></script>
+</body>
+</html>
