@@ -3,13 +3,16 @@
   margin: auto;
   padding: 30px 20px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(to bottom, #0d0d0d, #1e1e2f);
+  color: #fff;
+  min-height: 100vh;
 }
 
 .title {
   text-align: center;
   margin-bottom: 25px;
-  font-size: 26px;
-  color: #2d2d2d;
+  font-size: 28px;
+  color: #ff4d80;
 }
 
 .filters {
@@ -23,18 +26,20 @@
 .filter-input {
   padding: 8px 12px;
   font-size: 14px;
-  border: 1px solid #ccc;
+  border: 1px solid #555;
+  background-color: #2b2b3d;
+  color: #fff;
   border-radius: 6px;
   min-width: 180px;
 }
 
 .ad-card {
-  background-color: #fdfdfd;
-  border: 1px solid #e2e2e2;
+  background-color: #2a2a3a;
+  border: 1px solid #3a3a4f;
   border-radius: 10px;
   padding: 18px 20px;
   margin-bottom: 20px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 6px rgba(255, 255, 255, 0.05);
   transition: transform 0.2s;
 }
 
@@ -52,18 +57,18 @@
 .ad-header h3 {
   margin: 0;
   font-size: 18px;
-  color: #333;
+  color: #ff4d80;
 }
 
 .date {
   font-size: 13px;
-  color: #777;
+  color: #bbb;
 }
 
 .ad-card p {
   margin: 8px 0;
   font-size: 14px;
-  color: #444;
+  color: #ccc;
 }
 
 .action-buttons {
@@ -73,22 +78,23 @@
 .action-buttons button {
   margin-right: 10px;
   padding: 6px 12px;
-  border: none;
-  background-color: #1976d2;
-  color: #fff;
+  border: 1px solid #ff4d80;
+  background-color: transparent;
+  color: #ff4d80;
   font-size: 13px;
   border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: background 0.3s, color 0.3s;
 }
 
 .action-buttons button:hover {
-  background-color: #135ca8;
+  background-color: #ff4d80;
+  color: #fff;
 }
 
 .no-results {
   text-align: center;
-  color: #999;
+  color: #bbb;
   font-style: italic;
   margin-top: 40px;
 }
