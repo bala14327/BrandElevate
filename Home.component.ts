@@ -18,6 +18,10 @@ export class HomeComponent {
   newChat() {
     this.searchQuery = '';
   }
+  
+  submitPrompt() {
+    alert('Prompt submitted: ' + this.searchQuery);
+  }
 
   uploadMedia() {
     alert('Upload Media clicked');
@@ -31,7 +35,9 @@ export class HomeComponent {
     });
   }
 
-  submitPrompt() {
-    alert('Prompt submitted: ' + this.searchQuery);
-  }
-}
+
+
+
+
+
+
