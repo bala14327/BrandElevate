@@ -1,82 +1,54 @@
-<div class="history-page">
-  <div class="filters">
-    <input type="text" placeholder="Search..." />
-    
-    <select>
-      <option value="all">All</option>
-      <option value="texts">Texts</option>
-      <option value="images">Images</option>
-      <option value="date">Date</option>
-    </select>
+<div class="history-container">
+  <h2 class="title">Ad History</h2>
 
-    <input type="date" *ngIf="selectedSortOption === 'date'" />
-
-    <select>
-      <option value="asc">↑ Time</option>
-      <option value="desc">↓ Time</option>
-    </select>
-  </div>
-
-  <div class="chat-history">
-    <!-- List of chats based on search/sort -->
-    <div class="history-container">
-  <h2>Ad History</h2>
-
-  <!-- Filters -->
+  <!-- Filters Section -->
   <div class="filters">
     <input
       type="text"
       placeholder="Search by prompt..."
       [(ngModel)]="searchQuery"
       (input)="onSearchChange()"
+      class="filter-input"
     />
 
     <input
       type="date"
       [(ngModel)]="selectedDate"
       (change)="onDateChange($event)"
+      class="filter-input"
     />
 
-    <select [(ngModel)]="sortOption" (change)="onSortChange()">
+    <select [(ngModel)]="sortOption" (change)="onSortChange()" class="filter-input">
       <option value="newest">Newest First</option>
       <option value="oldest">Oldest First</option>
       <option value="type">Sort by Ad Type</option>
     </select>
   </div>
 
-  <!-- Ads -->
+  <!-- Ads Display Section -->
   <div *ngIf="adsHistory.length > 0; else noResults">
     <div *ngFor="let ad of adsHistory" class="ad-card">
-      <h3>{{ ad.adType }} Ad</h3>
+      <div class="ad-header">
+        <h3>{{ ad.adType }} Ad</h3>
+        <span class="date">{{ ad.generatedOn | date: 'short' }}</span>
+      </div>
+
       <p><strong>Prompt:</strong> {{ ad.promptContent }}</p>
       <p><strong>Response:</strong> {{ ad.responseContent }}</p>
-      <p><strong>Generated On:</strong> {{ ad.generatedOn | date: 'short' }}</p>
 
       <!-- Action Buttons -->
       <div class="action-buttons">
-        <button (click)="saveAd(ad)">Save</button>
-        <button (click)="editAd(ad)">Edit</button>
-        <button (click)="shareAd(ad)">Share</button>
-        <button (click)="startOver(ad)">Start Over</button>
-        <button (click)="copyAd(ad)">Copy</button>
+        <button (click)="saveAd(ad)">💾 Save</button>
+        <button (click)="editAd(ad)">✏️ Edit</button>
+        <button (click)="shareAd(ad)">🔗 Share</button>
+        <button (click)="startOver(ad)">🔄 Start Over</button>
+        <button (click)="copyAd(ad)">📋 Copy</button>
       </div>
     </div>
   </div>
 
+  <!-- No Results Template -->
   <ng-template #noResults>
-    <p>No ads match your search or filters.</p>
+    <p class="no-results">No ads match your search or filters.</p>
   </ng-template>
-</div>
-    <!-- Example -->
-    <div class="chat-item">
-      <p>Chat content here...</p>
-      <div class="chat-actions">
-        <button>Save</button>
-        <button>Edit</button>
-        <button>Share</button>
-        <button>Copy</button>
-        <button>Start Over</button>
-      </div>
-    </div>
-  </div>
 </div>
