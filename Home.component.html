@@ -1,25 +1,39 @@
 <div class="home-container">
   <!-- Left Sidebar -->
   <div class="sidebar">
-    <div class="menu">
-      <button (click)="newChat()">New Chat</button>
-      <button>Saved</button>
-      <button (click)="goToHistory()">History</button>
+    <div class="menu-option">
+      <i class="fas fa-plus"></i>
+      New Chat
     </div>
-    <div class="help">
-      <button>Help</button>
+    <div class="menu-option">
+      <i class="fas fa-bookmark"></i>
+      Saved
+    </div>
+    <div class="menu-option" (click)="navigateToHistory()">
+      <i class="fas fa-history"></i>
+      History
+    </div>
+    <div class="menu-option help">
+      <i class="fas fa-question-circle"></i>
+      Help
     </div>
   </div>
 
-  <!-- Right Main Content -->
-  <div class="main-content">
+  <!-- Right Content -->
+  <div class="content">
     <div class="search-area">
-      <input type="text" [(ngModel)]="searchQuery" placeholder="Send a message..." />
-    </div>
-    <div class="action-buttons">
-      <button (click)="uploadMedia()">Upload Media</button>
-      <button (click)="pasteText()">Paste</button>
-      <button class="primary-btn" (click)="submitPrompt()">Enter</button>
+      <input type="text" placeholder="Ask me anything..." class="search-input" />
+      <div class="search-buttons">
+        <button class="action-button">
+          <i class="fas fa-upload"></i> Upload Media
+        </button>
+        <button class="action-button">
+          <i class="fas fa-paste"></i> Paste
+        </button>
+        <button class="action-button primary">
+          <i class="fas fa-paper-plane"></i> Enter
+        </button>
+      </div>
     </div>
   </div>
 </div>
