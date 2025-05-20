@@ -5,54 +5,7 @@
     <button routerLink="/history">History</button>
     <button routerLink="/help">Help</button>
   </div>
-<div class="history-container">
-  <h2>Ad History</h2>
 
-  <!-- Filters -->
-  <div class="filters">
-    <input
-      type="text"
-      placeholder="Search by prompt..."
-      [(ngModel)]="searchQuery"
-      (input)="onSearchChange()"
-    />
-
-    <input
-      type="date"
-      [(ngModel)]="selectedDate"
-      (change)="onDateChange($event)"
-    />
-
-    <select [(ngModel)]="sortOption" (change)="onSortChange()">
-      <option value="newest">Newest First</option>
-      <option value="oldest">Oldest First</option>
-      <option value="type">Sort by Ad Type</option>
-    </select>
-  </div>
-
-  <!-- Ads -->
-  <div *ngIf="adsHistory.length > 0; else noResults">
-    <div *ngFor="let ad of adsHistory" class="ad-card">
-      <h3>{{ ad.adType }} Ad</h3>
-      <p><strong>Prompt:</strong> {{ ad.promptContent }}</p>
-      <p><strong>Response:</strong> {{ ad.responseContent }}</p>
-      <p><strong>Generated On:</strong> {{ ad.generatedOn | date: 'short' }}</p>
-
-      <!-- Action Buttons -->
-      <div class="action-buttons">
-        <button (click)="saveAd(ad)">Save</button>
-        <button (click)="editAd(ad)">Edit</button>
-        <button (click)="shareAd(ad)">Share</button>
-        <button (click)="startOver(ad)">Start Over</button>
-        <button (click)="copyAd(ad)">Copy</button>
-      </div>
-    </div>
-  </div>
-
-  <ng-template #noResults>
-    <p>No ads match your search or filters.</p>
-  </ng-template>
-</div>
 
   <!-- Main Content Area -->
   <div class="main-content">
