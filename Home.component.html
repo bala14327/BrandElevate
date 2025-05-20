@@ -1,27 +1,25 @@
 <div class="home-container">
-  <h2 class="section-title">Chat History</h2>
-
-  <div class="filters">
-    <input type="text" [(ngModel)]="searchQuery" placeholder="Search prompt..." />
-    <input type="date" [(ngModel)]="selectedDate" />
-    <select [(ngModel)]="sortOption">
-      <option value="">Sort</option>
-      <option value="newest">Newest First</option>
-      <option value="oldest">Oldest First</option>
-    </select>
+  <!-- Left Sidebar -->
+  <div class="sidebar">
+    <div class="menu">
+      <button (click)="newChat()">New Chat</button>
+      <button>Saved</button>
+      <button (click)="goToHistory()">History</button>
+    </div>
+    <div class="help">
+      <button>Help</button>
+    </div>
   </div>
 
-  <div *ngFor="let chat of filteredChats" class="chat-box">
-    <div class="prompt"><strong>Prompt:</strong> {{ chat.prompt }}</div>
-    <div class="response"><strong>Response:</strong> {{ chat.response }}</div>
-    <div class="date"><strong>Date:</strong> {{ chat.date }}</div>
-
-    <div class="chat-buttons">
-      <button (click)="startOver(chat)">Start Over</button>
-      <button (click)="edit(chat)">Edit</button>
-      <button (click)="save(chat)">Save</button>
-      <button (click)="share(chat)">Share</button>
-      <button (click)="copy(chat)">Copy</button>
+  <!-- Right Main Content -->
+  <div class="main-content">
+    <div class="search-area">
+      <input type="text" [(ngModel)]="searchQuery" placeholder="Send a message..." />
+    </div>
+    <div class="action-buttons">
+      <button (click)="uploadMedia()">Upload Media</button>
+      <button (click)="pasteText()">Paste</button>
+      <button class="primary-btn" (click)="submitPrompt()">Enter</button>
     </div>
   </div>
 </div>
