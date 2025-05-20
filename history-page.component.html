@@ -1,0 +1,34 @@
+<div class="history-page">
+  <div class="filters">
+    <input type="text" placeholder="Search..." />
+    
+    <select>
+      <option value="all">All</option>
+      <option value="texts">Texts</option>
+      <option value="images">Images</option>
+      <option value="date">Date</option>
+    </select>
+
+    <input type="date" *ngIf="selectedSortOption === 'date'" />
+
+    <select>
+      <option value="asc">↑ Time</option>
+      <option value="desc">↓ Time</option>
+    </select>
+  </div>
+
+  <div class="chat-history">
+    <!-- List of chats based on search/sort -->
+    <!-- Example -->
+    <div class="chat-item">
+      <p>Chat content here...</p>
+      <div class="chat-actions">
+        <button>Save</button>
+        <button>Edit</button>
+        <button>Share</button>
+        <button>Copy</button>
+        <button>Start Over</button>
+      </div>
+    </div>
+  </div>
+</div>
