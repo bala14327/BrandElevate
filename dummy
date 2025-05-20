@@ -1,3 +1,35 @@
+<div class="history-container">
+  <h2>Ad History</h2>
+
+  <label for="sort">Sort By:</label>
+  <select id="sort" [(ngModel)]="selectedSortOption">
+    <option value="date">Date</option>
+    <option value="type">Ad Type</option>
+  </select>
+
+  <!-- Show date input only when sort option is "date" -->
+  <input
+    type="date"
+    *ngIf="selectedSortOption === 'date'"
+    (change)="onDateChange($event)"
+  />
+
+  <!-- Loop through ads -->
+  <div *ngFor="let ad of adsHistory" class="ad-card">
+    <h3>{{ ad.adType }} Ad</h3>
+    <p><strong>Prompt:</strong> {{ ad.promptContent }}</p>
+    <p><strong>Response:</strong> {{ ad.responseContent }}</p>
+    <p><strong>Generated On:</strong> {{ ad.generatedOn | date:'short' }}</p>
+    <hr />
+  </div>
+</div>
+
+
+
+
+
+
+
 import { Component, OnInit } from '@angular/core';
 
 @Component({
