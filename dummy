@@ -1,0 +1,72 @@
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-history-page',
+  templateUrl: './history-page.component.html',
+})
+export class HistoryPageComponent implements OnInit {
+  selectedSortOption: string = 'date'; // default value
+  adsHistory: any[] = [];
+
+  ngOnInit(): void {
+    // Mock data
+    this.adsHistory = [
+      {
+        id: 1,
+        userId: 1,
+        adType: 'Text',
+        promptContent: 'Buy the best shoes',
+        responseContent: 'Check out our latest collection!',
+        generatedOn: new Date('2024-05-15T10:30:00'),
+      },
+      {
+        id: 2,
+        userId: 1,
+        adType: 'Image',
+        promptContent: 'Beach Vacation',
+        responseContent: 'Visual Ad for a beach holiday',
+        generatedOn: new Date('2024-05-16T14:45:00'),
+      },
+      {
+        id: 3,
+        userId: 2,
+        adType: 'Text',
+        promptContent: 'Order Food',
+        responseContent: 'Hungry? We deliver!',
+        generatedOn: new Date('2024-05-16T18:00:00'),
+      }
+    ];
+  }
+
+  onDateChange(event: Event) {
+    const selectedDate = new Date((event.target as HTMLInputElement).value);
+    const filtered = this.adsHistory.filter(ad =>
+      new Date(ad.generatedOn).toDateString() === selectedDate.toDateString()
+    );
+    console.log('Filtered Ads:', filtered);
+    this.adsHistory = filtered; // display filtered ads
+  }
+}
+
+
+<select [(ngModel)]="selectedSortOption">
+  <option value="date">Date</option>
+  <option value="type">Ad Type</option>
+</select>
+
+<input type="date" *ngIf="selectedSortOption === 'date'" (change)="onDateChange($event)" />
+
+<div *ngFor="let ad of adsHistory">
+  <h3>{{ ad.adType }}</h3>
+  <p><strong>Prompt:</strong> {{ ad.promptContent }}</p>
+  <p><strong>Response:</strong> {{ ad.responseContent }}</p>
+  <p><strong>Generated On:</strong> {{ ad.generatedOn | date:'short' }}</p>
+  <hr />
+</div>
+
+
+
+    import { FormsModule } from '@angular/forms';
+@NgModule({
+  imports: [FormsModule],
+})
