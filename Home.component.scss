@@ -1,0 +1,80 @@
+.home-container {
+  display: flex;
+  height: 100vh;
+  font-family: 'Poppins', sans-serif;
+  background-color: #0f172a; // Tailwind slate-900 style
+  color: white;
+}
+
+// Sidebar
+.sidebar {
+  width: 20%;
+  background-color: #1e293b; // Slightly lighter slate
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.menu button,
+.help button {
+  background: none;
+  border: none;
+  color: white;
+  padding: 1rem 0;
+  text-align: left;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.menu button:hover,
+.help button:hover {
+  color: #38bdf8; // Tailwind sky-400
+}
+
+// Main content
+.main-content {
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.search-area input {
+  width: 60%;
+  padding: 1rem;
+  border-radius: 10px;
+  border: none;
+  font-size: 1.2rem;
+  outline: none;
+}
+
+.action-buttons {
+  margin-top: 1.5rem;
+  display: flex;
+  gap: 1rem;
+}
+
+.action-buttons button {
+  padding: 0.7rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  background-color: #334155; // slate-700
+  color: white;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.action-buttons button:hover {
+  background-color: #38bdf8;
+}
+
+.primary-btn {
+  background-color: #2563eb; // Tailwind blue-600
+}
+
+.primary-btn:hover {
+  background-color: #3b82f6; // blue-500
+}
