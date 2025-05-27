@@ -1,0 +1,10 @@
+<!-- Notification bell icon -->
+<div style="position: relative;">
+  <button (click)="toggleNotifications()" class="notification-btn">
+    🔔
+    <span *ngIf="unreadCount > 0" class="badge">{{ unreadCount }}</span>
+  </button>
+
+  <!-- Notification popup -->
+  <app-notifications *ngIf="showNotifications"></app-notifications>
+</div>
