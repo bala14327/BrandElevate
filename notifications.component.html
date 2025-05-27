@@ -1,0 +1,13 @@
+<div class="notification-box">
+  <h4>Notifications</h4>
+  <ul>
+    <li *ngFor="let notification of notifications">
+      <div [class.unread]="!notification.read">
+        <strong>{{ notification.title }}</strong>
+        <p>{{ notification.message }}</p>
+        <small>{{ notification.timestamp | date:'short' }}</small>
+      </div>
+    </li>
+  </ul>
+  <button (click)="markAsRead()">Mark all as read</button>
+</div>
