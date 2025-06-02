@@ -1,0 +1,6 @@
+<div *ngFor="let ad of historyAds">
+  <h4>{{ ad.adType }}</h4>
+  <p>{{ ad.textPrompt }}</p>
+  <p>{{ ad.responseContent }}</p>
+  <p>{{ ad.generatedOn | date:'short' }}</p>
+</div>
